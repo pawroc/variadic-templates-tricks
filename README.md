@@ -3,5 +3,5 @@ Some curious variadic templates tricks
 
 ### Build
 ```bash
-g++ main.cpp -std=c++11
+g++ main.cpp print.hpp -std=c++14
 ```
