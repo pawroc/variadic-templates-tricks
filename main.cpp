@@ -1,4 +1,6 @@
 #include <iostream>
+#include <vector>
+#include <sstream>
 
 template<typename T>
 void print_impl(const T& t)
@@ -36,6 +38,26 @@ int f2()
     return 2;
 }
 
+template<typename ... T>
+std::vector<std::string> print3(const T& ... t)
+{
+    std::vector<std::string> retval;
+    std::stringstream ss;
+
+    (void)std::initializer_list<int>
+    {
+        // it is guaranteed that all functions will be called in order
+        (
+            ss.str(""),
+            ss << t,
+            retval.push_back(ss.str()),
+            0
+        )...
+    };
+    return retval;
+}
+
+
 // What is `(print_impl(t), 0)`? It means:
 // execute f1(), then execute f2() and return last value - it is ret val from f2()
 
@@ -47,6 +69,12 @@ int main()
     std::cout << "\n#### print2 ###\n";
     print2("Hello", "World", 1, 2.4);
     
+    std::cout << "\n#### print3 ###\n";
+    for (const auto& v : print3("Hello", "World", 1, 2.4))
+    {
+        std::cout << v << "\n";
+    }
+
     std::cout << "\n#### (f1(), f2()) ###\n";
     int ret = (f1(), f2());
     std::cout << "Ret: " << ret << "\n";
